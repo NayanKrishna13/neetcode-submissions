@@ -1,0 +1,7 @@
+n=int(input())
+s=0
+for i in range(n):
+  l=input().split(' ')
+  if l.count('1')>=2:
+    s+=1
+print(s)
