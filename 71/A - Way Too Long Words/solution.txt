@@ -1,0 +1,10 @@
+n=int(input())
+l=[]
+for i in range(n):
+  s=input()
+  l.append(s)
+for i in l:
+  if len(i)>10:
+    print(i[0]+str(len(i)-2)+i[len(i)-1])
+  else:
+    print(i)
