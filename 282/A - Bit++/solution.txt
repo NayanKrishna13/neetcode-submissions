@@ -1,0 +1,9 @@
+num=int(input())
+n=0
+for i in range(num):
+    s=input()
+    if '-' in s:
+        n-=1
+    else:
+        n+=1
+print(n)
