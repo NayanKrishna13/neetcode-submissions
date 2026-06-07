@@ -1,0 +1,40 @@
+name: Codeforces Submissions Automated Sync
+
+on:
+  schedule:
+    - cron: '0 */3 * * *' # Automatically runs every 3 hours
+  workflow_dispatch: # Allows you to manually click a button to run it anytime
+
+jobs:
+  sync-codeforces:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out target repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python Environment
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install Runtime Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+
+    - name: Execute Sync Automation Script
+      run: python sync_cf.py
+
+    - name: Commit and Push Synchronized Code
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@://github.com'
+        git add Codeforces_Submissions/
+        if git diff --staged --quiet; then
+          echo "No new automated Codeforces submissions found to sync."
+        else
+          git commit -m "Automated Sync: Added latest Codeforces Solutions"
+          git push origin HEAD
+        fi
